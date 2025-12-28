@@ -1,0 +1,2530 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="A zero-friction, offline-first writing space to quickly unload mental clutter">
+<meta name="theme-color" content="#4A90A4">
+<title>Thought Dump Pad</title>
+<style>
+/* ========================================
+CSS CUSTOM PROPERTIES - THEMES
+======================================== */
+:root {
+--bg-primary: #FFFFFF;
+--bg-secondary: #F7F7F7;
+--bg-tertiary: #EFEFEF;
+--bg-textarea: #FFFFFF;
+--text-primary: #1A1A2E;
+--text-secondary: #6B7280;
+--text-placeholder: #9CA3AF;
+--accent: #4A90A4;
+--accent-hover: #3D7A8C;
+--accent-light: rgba(74, 144, 164, 0.1);
+--border: #E5E7EB;
+--border-light: #F3F4F6;
+--shadow: rgba(0, 0, 0, 0.1);
+--shadow-lg: rgba(0, 0, 0, 0.15);
+--success: #10B981;
+--warning: #F59E0B;
+--danger: #EF4444;
+--danger-hover: #DC2626;
+--scrollbar-thumb: #CBD5E1;
+--scrollbar-track: #F1F5F9;
+--modal-backdrop: rgba(0, 0, 0, 0.5);
+--transition-speed: 0.3s;
+--font-writing: 'Georgia', 'Cambria', 'Times New Roman', serif;
+--font-ui: 'Segoe UI', -apple-system, BlinkMacSystemFont, 'Roboto', sans-serif;
+--font-mono: 'Fira Code', 'Consolas', 'Monaco', monospace;
+}
+/* Light Theme */
+[data-theme="light"] {
+--bg-primary: #FFFFFF;
+--bg-secondary: #F7F7F7;
+--bg-tertiary: #EFEFEF;
+--bg-textarea: #FFFFFF;
+--text-primary: #1A1A2E;
+--text-secondary: #6B7280;
+--text-placeholder: #9CA3AF;
+--accent: #4A90A4;
+--accent-hover: #3D7A8C;
+--accent-light: rgba(74, 144, 164, 0.1);
+--border: #E5E7EB;
+--shadow: rgba(0, 0, 0, 0.1);
+}
+/* Dark Theme */
+[data-theme="dark"] {
+--bg-primary: #1A1A2E;
+--bg-secondary: #16162A;
+--bg-tertiary: #12121F;
+--bg-textarea: #222240;
+--text-primary: #E8E8E8;
+--text-secondary: #A0A0B0;
+--text-placeholder: #6B6B80;
+--accent: #64B5F6;
+--accent-hover: #90CAF9;
+--accent-light: rgba(100, 181, 246, 0.1);
+--border: #2D2D44;
+--shadow: rgba(0, 0, 0, 0.3);
+--modal-backdrop: rgba(0, 0, 0, 0.7);
+}
+/* Sepia Theme */
+[data-theme="sepia"] {
+--bg-primary: #F4ECD8;
+--bg-secondary: #EDE4CE;
+--bg-tertiary: #E6DBBF;
+--bg-textarea: #FAF6ED;
+--text-primary: #5C4033;
+--text-secondary: #7D6550;
+--text-placeholder: #A08060;
+--accent: #8B6914;
+--accent-hover: #A67C00;
+--accent-light: rgba(139, 105, 20, 0.1);
+--border: #D4C4A8;
+--shadow: rgba(92, 64, 51, 0.15);
+}
+/* Ocean Theme */
+[data-theme="ocean"] {
+--bg-primary: #E3F2FD;
+--bg-secondary: #BBDEFB;
+--bg-tertiary: #90CAF9;
+--bg-textarea: #E8F4FD;
+--text-primary: #0D47A1;
+--text-secondary: #1565C0;
+--text-placeholder: #64B5F6;
+--accent: #0288D1;
+--accent-hover: #03A9F4;
+--accent-light: rgba(2, 136, 209, 0.1);
+--border: #90CAF9;
+--shadow: rgba(13, 71, 161, 0.15);
+}
+/* Forest Theme */
+[data-theme="forest"] {
+--bg-primary: #E8F5E9;
+--bg-secondary: #C8E6C9;
+--bg-tertiary: #A5D6A7;
+--bg-textarea: #F1F8F2;
+--text-primary: #1B5E20;
+--text-secondary: #2E7D32;
+--text-placeholder: #81C784;
+--accent: #43A047;
+--accent-hover: #66BB6A;
+--accent-light: rgba(67, 160, 71, 0.1);
+--border: #A5D6A7;
+--shadow: rgba(27, 94, 32, 0.15);
+}
+/* Lavender Theme */
+[data-theme="lavender"] {
+--bg-primary: #F3E5F5;
+--bg-secondary: #E1BEE7;
+--bg-tertiary: #CE93D8;
+--bg-textarea: #F8F0FA;
+--text-primary: #4A148C;
+--text-secondary: #6A1B9A;
+--text-placeholder: #BA68C8;
+--accent: #9C27B0;
+--accent-hover: #AB47BC;
+--accent-light: rgba(156, 39, 176, 0.1);
+--border: #CE93D8;
+--shadow: rgba(74, 20, 140, 0.15);
+}
+/* Midnight Theme */
+[data-theme="midnight"] {
+--bg-primary: #0D1B2A;
+--bg-secondary: #1B263B;
+--bg-tertiary: #253549;
+--bg-textarea: #1B263B;
+--text-primary: #E0E1DD;
+--text-secondary: #778DA9;
+--text-placeholder: #415A77;
+--accent: #778DA9;
+--accent-hover: #9BB1C8;
+--accent-light: rgba(119, 141, 169, 0.1);
+--border: #2D3E50;
+--shadow: rgba(0, 0, 0, 0.4);
+--modal-backdrop: rgba(0, 0, 0, 0.8);
+}
+/* High Contrast Theme */
+[data-theme="high-contrast"] {
+--bg-primary: #000000;
+--bg-secondary: #1A1A1A;
+--bg-tertiary: #2A2A2A;
+--bg-textarea: #0A0A0A;
+--text-primary: #FFFFFF;
+--text-secondary: #FFFF00;
+--text-placeholder: #888888;
+--accent: #FFFF00;
+--accent-hover: #FFFF66;
+--accent-light: rgba(255, 255, 0, 0.1);
+--border: #FFFFFF;
+--shadow: rgba(255, 255, 255, 0.2);
+}
+/* ========================================
+RESET & BASE STYLES
+======================================== */
+*, *::before, *::after {
+box-sizing: border-box;
+margin: 0;
+padding: 0;
+}
+html {
+font-size: 16px;
+-webkit-font-smoothing: antialiased;
+-moz-osx-font-smoothing: grayscale;
+scroll-behavior: smooth;
+}
+body {
+font-family: var(--font-ui);
+background-color: var(--bg-primary);
+color: var(--text-primary);
+min-height: 100vh;
+display: flex;
+flex-direction: column;
+transition: background-color var(--transition-speed) ease,
+color var(--transition-speed) ease;
+overflow-x: hidden;
+}
+body.focus-mode {
+overflow: hidden;
+}
+/* ========================================
+LAYOUT
+======================================== */
+.app-container {
+display: flex;
+flex-direction: column;
+min-height: 100vh;
+max-width: 1000px;
+margin: 0 auto;
+padding: 1rem;
+width: 100%;
+transition: max-width var(--transition-speed) ease;
+}
+body.focus-mode .app-container {
+max-width: 800px;
+padding: 2rem;
+}
+/* ========================================
+HEADER
+======================================== */
+.header {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 0.5rem 0;
+margin-bottom: 0.5rem;
+flex-wrap: wrap;
+gap: 0.75rem;
+transition: opacity var(--transition-speed) ease,
+transform var(--transition-speed) ease;
+}
+body.focus-mode .header {
+opacity: 0;
+pointer-events: none;
+position: absolute;
+transform: translateY(-100%);
+}
+.logo {
+display: flex;
+align-items: center;
+gap: 0.5rem;
+}
+.logo-icon {
+width: 28px;
+height: 28px;
+fill: var(--accent);
+transition: fill var(--transition-speed) ease;
+}
+.logo-text {
+font-size: 1.15rem;
+font-weight: 600;
+color: var(--text-primary);
+letter-spacing: -0.02em;
+}
+.header-actions {
+display: flex;
+align-items: center;
+gap: 0.5rem;
+flex-wrap: wrap;
+}
+/* ========================================
+BUTTONS
+======================================== */
+.btn {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+gap: 0.35rem;
+padding: 0.45rem 0.75rem;
+font-size: 0.8rem;
+font-weight: 500;
+font-family: var(--font-ui);
+color: var(--text-primary);
+background-color: var(--bg-secondary);
+border: 1px solid var(--border);
+border-radius: 6px;
+cursor: pointer;
+transition: all 0.2s ease;
+white-space: nowrap;
+}
+.btn:hover {
+background-color: var(--bg-tertiary);
+border-color: var(--accent);
+}
+.btn:focus {
+outline: none;
+box-shadow: 0 0 0 2px var(--accent-light), 0 0 0 3px var(--accent);
+}
+.btn:active {
+transform: scale(0.98);
+}
+.btn svg {
+width: 16px;
+height: 16px;
+fill: currentColor;
+}
+.btn-primary {
+background-color: var(--accent);
+color: white;
+border-color: var(--accent);
+}
+.btn-primary:hover {
+background-color: var(--accent-hover);
+border-color: var(--accent-hover);
+}
+.btn-danger {
+color: var(--danger);
+}
+.btn-danger:hover {
+background-color: var(--danger);
+color: white;
+border-color: var(--danger);
+}
+.btn-icon {
+padding: 0.45rem;
+min-width: 32px;
+}
+.btn-sm {
+padding: 0.3rem 0.5rem;
+font-size: 0.75rem;
+}
+.btn-sm svg {
+width: 14px;
+height: 14px;
+}
+/* ========================================
+DROPDOWN MENU
+======================================== */
+.dropdown {
+position: relative;
+display: inline-block;
+}
+.dropdown-menu {
+position: absolute;
+top: calc(100% + 4px);
+right: 0;
+min-width: 180px;
+background-color: var(--bg-primary);
+border: 1px solid var(--border);
+border-radius: 8px;
+box-shadow: 0 4px 20px var(--shadow-lg);
+z-index: 100;
+opacity: 0;
+visibility: hidden;
+transform: translateY(-10px);
+transition: all 0.2s ease;
+}
+.dropdown.active .dropdown-menu {
+opacity: 1;
+visibility: visible;
+transform: translateY(0);
+}
+.dropdown-menu::before {
+content: '';
+position: absolute;
+top: -6px;
+right: 12px;
+width: 10px;
+height: 10px;
+background-color: var(--bg-primary);
+border-left: 1px solid var(--border);
+border-top: 1px solid var(--border);
+transform: rotate(45deg);
+}
+.dropdown-item {
+display: flex;
+align-items: center;
+gap: 0.5rem;
+width: 100%;
+padding: 0.6rem 1rem;
+font-size: 0.85rem;
+color: var(--text-primary);
+background: none;
+border: none;
+cursor: pointer;
+text-align: left;
+transition: background-color 0.15s ease;
+}
+.dropdown-item:first-child {
+border-radius: 7px 7px 0 0;
+}
+.dropdown-item:last-child {
+border-radius: 0 0 7px 7px;
+}
+.dropdown-item:hover {
+background-color: var(--accent-light);
+}
+.dropdown-item svg {
+width: 16px;
+height: 16px;
+fill: var(--text-secondary);
+}
+.dropdown-divider {
+height: 1px;
+background-color: var(--border);
+margin: 0.25rem 0;
+}
+/* ========================================
+THEME SWITCHER
+======================================== */
+.theme-switcher {
+display: flex;
+align-items: center;
+gap: 0.4rem;
+}
+.theme-btn {
+width: 24px;
+height: 24px;
+border-radius: 50%;
+border: 2px solid transparent;
+cursor: pointer;
+transition: all 0.2s ease;
+position: relative;
+}
+.theme-btn:hover {
+transform: scale(1.2);
+}
+.theme-btn:focus {
+outline: none;
+box-shadow: 0 0 0 2px var(--bg-primary), 0 0 0 4px var(--accent);
+}
+.theme-btn.active {
+border-color: var(--text-primary);
+transform: scale(1.1);
+}
+.theme-btn[data-theme="light"] { background: linear-gradient(135deg, #FFFFFF 50%, #E5E7EB 50%); }
+.theme-btn[data-theme="dark"] { background: linear-gradient(135deg, #1A1A2E 50%, #2D2D44 50%); }
+.theme-btn[data-theme="sepia"] { background: linear-gradient(135deg, #F4ECD8 50%, #D4C4A8 50%); }
+.theme-btn[data-theme="ocean"] { background: linear-gradient(135deg, #E3F2FD 50%, #64B5F6 50%); }
+.theme-btn[data-theme="forest"] { background: linear-gradient(135deg, #E8F5E9 50%, #81C784 50%); }
+.theme-btn[data-theme="lavender"] { background: linear-gradient(135deg, #F3E5F5 50%, #CE93D8 50%); }
+.theme-btn[data-theme="high-contrast"] { background: linear-gradient(135deg, #000000 50%, #FFFF00 50%); }
+/* ========================================
+TOOLBAR
+======================================== */
+.toolbar {
+display: flex;
+align-items: center;
+justify-content: space-between;
+gap: 0.5rem;
+padding: 0.5rem 0.75rem;
+background-color: var(--bg-secondary);
+border: 1px solid var(--border);
+border-radius: 8px;
+margin-bottom: 0.5rem;
+flex-wrap: wrap;
+transition: opacity var(--transition-speed) ease,
+transform var(--transition-speed) ease;
+}
+body.focus-mode .toolbar {
+opacity: 0;
+pointer-events: none;
+position: absolute;
+transform: translateY(-100%);
+}
+.toolbar-group {
+display: flex;
+align-items: center;
+gap: 0.35rem;
+}
+.toolbar-divider {
+width: 1px;
+height: 24px;
+background-color: var(--border);
+margin: 0 0.25rem;
+}
+/* ========================================
+NOTES TABS
+======================================== */
+.notes-tabs {
+display: flex;
+align-items: center;
+gap: 0.25rem;
+padding: 0.5rem 0;
+overflow-x: auto;
+scrollbar-width: none;
+-ms-overflow-style: none;
+transition: opacity var(--transition-speed) ease;
+}
+.notes-tabs::-webkit-scrollbar {
+display: none;
+}
+body.focus-mode .notes-tabs {
+opacity: 0;
+pointer-events: none;
+height: 0;
+padding: 0;
+overflow: hidden;
+}
+.note-tab {
+display: flex;
+align-items: center;
+gap: 0.35rem;
+padding: 0.4rem 0.75rem;
+font-size: 0.8rem;
+color: var(--text-secondary);
+background-color: var(--bg-secondary);
+border: 1px solid var(--border);
+border-radius: 6px;
+cursor: pointer;
+transition: all 0.2s ease;
+white-space: nowrap;
+max-width: 150px;
+}
+.note-tab:hover {
+background-color: var(--bg-tertiary);
+}
+.note-tab.active {
+color: var(--accent);
+background-color: var(--accent-light);
+border-color: var(--accent);
+}
+.note-tab-title {
+overflow: hidden;
+text-overflow: ellipsis;
+max-width: 100px;
+}
+.note-tab-close {
+display: flex;
+align-items: center;
+justify-content: center;
+width: 16px;
+height: 16px;
+border-radius: 50%;
+background: transparent;
+border: none;
+cursor: pointer;
+opacity: 0.5;
+transition: all 0.2s ease;
+}
+.note-tab-close:hover {
+opacity: 1;
+background-color: var(--danger);
+color: white;
+}
+.note-tab-close svg {
+width: 10px;
+height: 10px;
+fill: currentColor;
+}
+.add-note-btn {
+padding: 0.4rem;
+border-radius: 6px;
+}
+/* ========================================
+MAIN WRITING AREA
+======================================== */
+.writing-area {
+flex: 1;
+display: flex;
+flex-direction: column;
+min-height: 0;
+}
+.textarea-container {
+flex: 1;
+display: flex;
+flex-direction: column;
+background-color: var(--bg-textarea);
+border-radius: 12px;
+box-shadow: 0 2px 12px var(--shadow);
+overflow: hidden;
+transition: all var(--transition-speed) ease;
+}
+body.focus-mode .textarea-container {
+box-shadow: none;
+border-radius: 0;
+background-color: var(--bg-primary);
+}
+.textarea-container:focus-within {
+box-shadow: 0 4px 20px var(--shadow), 0 0 0 2px var(--accent);
+}
+body.focus-mode .textarea-container:focus-within {
+box-shadow: none;
+}
+#thought-pad {
+flex: 1;
+width: 100%;
+min-height: 55vh;
+padding: 1.5rem;
+border: none;
+outline: none;
+resize: none;
+font-family: var(--font-writing);
+font-size: 1.125rem;
+line-height: 1.8;
+color: var(--text-primary);
+background-color: transparent;
+transition: color var(--transition-speed) ease;
+}
+body.focus-mode #thought-pad {
+min-height: calc(100vh - 100px);
+font-size: 1.25rem;
+}
+#thought-pad::placeholder {
+color: var(--text-placeholder);
+font-style: italic;
+}
+#thought-pad::-webkit-scrollbar {
+width: 8px;
+}
+#thought-pad::-webkit-scrollbar-track {
+background: transparent;
+}
+#thought-pad::-webkit-scrollbar-thumb {
+background: var(--scrollbar-thumb);
+border-radius: 4px;
+}
+#thought-pad::-webkit-scrollbar-thumb:hover {
+background: var(--text-secondary);
+}
+/* Font family options */
+.font-serif { font-family: 'Georgia', 'Cambria', 'Times New Roman', serif; }
+.font-sans { font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, sans-serif; }
+.font-mono { font-family: 'Fira Code', 'Consolas', 'Monaco', monospace; }
+/* ========================================
+STATUS BAR
+======================================== */
+.status-bar {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 0.5rem 1rem;
+background-color: var(--bg-secondary);
+border-top: 1px solid var(--border);
+font-size: 0.75rem;
+color: var(--text-secondary);
+transition: all var(--transition-speed) ease;
+flex-wrap: wrap;
+gap: 0.5rem;
+}
+body.focus-mode .status-bar {
+background-color: transparent;
+border-color: transparent;
+justify-content: center;
+}
+.stats-group {
+display: flex;
+gap: 1rem;
+flex-wrap: wrap;
+}
+.stat-item {
+display: flex;
+align-items: center;
+gap: 0.25rem;
+}
+.stat-item svg {
+width: 12px;
+height: 12px;
+fill: var(--text-secondary);
+}
+.save-status {
+display: flex;
+align-items: center;
+gap: 0.35rem;
+}
+.save-indicator {
+width: 8px;
+height: 8px;
+border-radius: 50%;
+background-color: var(--success);
+transition: background-color 0.3s ease;
+}
+.save-indicator.saving {
+background-color: var(--warning);
+animation: pulse 1s infinite;
+}
+@keyframes pulse {
+0%, 100% { opacity: 1; }
+50% { opacity: 0.5; }
+}
+.session-timer {
+display: flex;
+align-items: center;
+gap: 0.35rem;
+padding: 0.2rem 0.5rem;
+background-color: var(--accent-light);
+border-radius: 4px;
+color: var(--accent);
+font-weight: 500;
+}
+body.focus-mode .stats-group,
+body.focus-mode .save-status,
+body.focus-mode .session-timer {
+display: none;
+}
+body.focus-mode .focus-stats {
+display: flex !important;
+}
+.focus-stats {
+display: none;
+gap: 1.5rem;
+color: var(--text-secondary);
+}
+/* ========================================
+FOOTER
+======================================== */
+.footer {
+text-align: center;
+padding: 1rem 0 0.75rem;
+color: var(--text-secondary);
+font-size: 0.8rem;
+transition: opacity var(--transition-speed) ease;
+}
+body.focus-mode .footer {
+opacity: 0;
+pointer-events: none;
+}
+.footer .heart {
+color: #EF4444;
+display: inline-block;
+animation: heartbeat 1.5s ease-in-out infinite;
+}
+@keyframes heartbeat {
+0%, 100% { transform: scale(1); }
+50% { transform: scale(1.15); }
+}
+.footer a {
+color: var(--accent);
+text-decoration: none;
+font-weight: 500;
+transition: color 0.2s ease;
+}
+.footer a:hover {
+text-decoration: underline;
+}
+/* ========================================
+MODAL
+======================================== */
+.modal-backdrop {
+position: fixed;
+inset: 0;
+background-color: var(--modal-backdrop);
+display: flex;
+align-items: center;
+justify-content: center;
+z-index: 1000;
+opacity: 0;
+visibility: hidden;
+transition: all 0.3s ease;
+padding: 1rem;
+}
+.modal-backdrop.active {
+opacity: 1;
+visibility: visible;
+}
+.modal {
+background-color: var(--bg-primary);
+border-radius: 12px;
+box-shadow: 0 20px 60px var(--shadow-lg);
+max-width: 500px;
+width: 100%;
+max-height: 90vh;
+overflow: hidden;
+transform: scale(0.9) translateY(20px);
+transition: transform 0.3s ease;
+}
+.modal-backdrop.active .modal {
+transform: scale(1) translateY(0);
+}
+.modal-header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 1rem 1.25rem;
+border-bottom: 1px solid var(--border);
+}
+.modal-title {
+font-size: 1.1rem;
+font-weight: 600;
+}
+.modal-close {
+display: flex;
+align-items: center;
+justify-content: center;
+width: 32px;
+height: 32px;
+border-radius: 6px;
+background: transparent;
+border: none;
+cursor: pointer;
+color: var(--text-secondary);
+transition: all 0.2s ease;
+}
+.modal-close:hover {
+background-color: var(--bg-secondary);
+color: var(--text-primary);
+}
+.modal-close svg {
+width: 20px;
+height: 20px;
+fill: currentColor;
+}
+.modal-body {
+padding: 1.25rem;
+overflow-y: auto;
+max-height: calc(90vh - 140px);
+}
+.modal-footer {
+display: flex;
+justify-content: flex-end;
+gap: 0.5rem;
+padding: 1rem 1.25rem;
+border-top: 1px solid var(--border);
+}
+/* ========================================
+FORM ELEMENTS
+======================================== */
+.form-group {
+margin-bottom: 1rem;
+}
+.form-label {
+display: block;
+font-size: 0.85rem;
+font-weight: 500;
+color: var(--text-primary);
+margin-bottom: 0.35rem;
+}
+.form-input {
+width: 100%;
+padding: 0.6rem 0.75rem;
+font-size: 0.9rem;
+font-family: var(--font-ui);
+color: var(--text-primary);
+background-color: var(--bg-secondary);
+border: 1px solid var(--border);
+border-radius: 6px;
+transition: all 0.2s ease;
+}
+.form-input:focus {
+outline: none;
+border-color: var(--accent);
+box-shadow: 0 0 0 3px var(--accent-light);
+}
+.form-input::placeholder {
+color: var(--text-placeholder);
+}
+.form-select {
+appearance: none;
+background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%236B7280' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+background-repeat: no-repeat;
+background-position: right 0.75rem center;
+padding-right: 2.5rem;
+cursor: pointer;
+}
+.form-row {
+display: flex;
+gap: 0.75rem;
+}
+.form-row .form-group {
+flex: 1;
+}
+/* ========================================
+FIND AND REPLACE
+======================================== */
+.find-replace-bar {
+display: none;
+align-items: center;
+gap: 0.5rem;
+padding: 0.5rem 0.75rem;
+background-color: var(--bg-secondary);
+border: 1px solid var(--border);
+border-radius: 8px;
+margin-bottom: 0.5rem;
+flex-wrap: wrap;
+}
+.find-replace-bar.active {
+display: flex;
+}
+.find-replace-bar .form-input {
+max-width: 200px;
+padding: 0.4rem 0.6rem;
+font-size: 0.85rem;
+}
+.find-count {
+font-size: 0.8rem;
+color: var(--text-secondary);
+min-width: 60px;
+}
+/* ========================================
+KEYBOARD SHORTCUTS
+======================================== */
+.shortcuts-grid {
+display: grid;
+grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+gap: 0.75rem;
+}
+.shortcut-item {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 0.5rem 0;
+border-bottom: 1px solid var(--border-light);
+}
+.shortcut-label {
+font-size: 0.85rem;
+color: var(--text-secondary);
+}
+.shortcut-keys {
+display: flex;
+gap: 0.25rem;
+}
+.key {
+display: inline-flex;
+align-items: center;
+justify-content: center;
+min-width: 24px;
+padding: 0.2rem 0.4rem;
+font-size: 0.7rem;
+font-family: var(--font-mono);
+color: var(--text-primary);
+background-color: var(--bg-secondary);
+border: 1px solid var(--border);
+border-radius: 4px;
+box-shadow: 0 1px 2px var(--shadow);
+}
+/* ========================================
+SETTINGS PANEL
+======================================== */
+.settings-section {
+margin-bottom: 1.5rem;
+}
+.settings-section:last-child {
+margin-bottom: 0;
+}
+.settings-section-title {
+font-size: 0.9rem;
+font-weight: 600;
+color: var(--text-primary);
+margin-bottom: 0.75rem;
+padding-bottom: 0.5rem;
+border-bottom: 1px solid var(--border);
+}
+.setting-row {
+display: flex;
+justify-content: space-between;
+align-items: center;
+padding: 0.5rem 0;
+}
+.setting-label {
+font-size: 0.85rem;
+color: var(--text-secondary);
+}
+.setting-control {
+display: flex;
+align-items: center;
+gap: 0.5rem;
+}
+.range-slider {
+-webkit-appearance: none;
+appearance: none;
+width: 100px;
+height: 6px;
+background: var(--bg-tertiary);
+border-radius: 3px;
+outline: none;
+cursor: pointer;
+}
+.range-slider::-webkit-slider-thumb {
+-webkit-appearance: none;
+appearance: none;
+width: 16px;
+height: 16px;
+background: var(--accent);
+border-radius: 50%;
+cursor: pointer;
+transition: transform 0.2s ease;
+}
+.range-slider::-webkit-slider-thumb:hover {
+transform: scale(1.2);
+}
+.range-value {
+min-width: 40px;
+text-align: center;
+font-size: 0.8rem;
+color: var(--text-primary);
+}
+/* ========================================
+TOAST NOTIFICATIONS
+======================================== */
+.toast-container {
+position: fixed;
+bottom: 1.5rem;
+right: 1.5rem;
+z-index: 2000;
+display: flex;
+flex-direction: column;
+gap: 0.5rem;
+}
+.toast {
+display: flex;
+align-items: center;
+gap: 0.5rem;
+padding: 0.75rem 1rem;
+background-color: var(--bg-primary);
+border: 1px solid var(--border);
+border-radius: 8px;
+box-shadow: 0 4px 20px var(--shadow-lg);
+font-size: 0.85rem;
+color: var(--text-primary);
+transform: translateX(120%);
+transition: transform 0.3s ease;
+}
+.toast.show {
+transform: translateX(0);
+}
+.toast.success {
+border-left: 3px solid var(--success);
+}
+.toast.error {
+border-left: 3px solid var(--danger);
+}
+.toast.warning {
+border-left: 3px solid var(--warning);
+}
+.toast svg {
+width: 18px;
+height: 18px;
+flex-shrink: 0;
+}
+.toast.success svg { fill: var(--success); }
+.toast.error svg { fill: var(--danger); }
+.toast.warning svg { fill: var(--warning); }
+/* ========================================
+GOAL PROGRESS
+======================================== */
+.goal-progress {
+display: flex;
+align-items: center;
+gap: 0.5rem;
+}
+.progress-bar {
+width: 60px;
+height: 6px;
+background-color: var(--bg-tertiary);
+border-radius: 3px;
+overflow: hidden;
+}
+.progress-fill {
+height: 100%;
+background-color: var(--accent);
+border-radius: 3px;
+transition: width 0.3s ease;
+}
+.progress-fill.complete {
+background-color: var(--success);
+}
+/* ========================================
+FOCUS MODE EXIT BUTTON
+======================================== */
+.focus-exit-btn {
+position: fixed;
+top: 1rem;
+right: 1rem;
+opacity: 0;
+visibility: hidden;
+transition: all 0.3s ease;
+z-index: 100;
+}
+body.focus-mode .focus-exit-btn {
+opacity: 0.3;
+visibility: visible;
+}
+body.focus-mode .focus-exit-btn:hover {
+opacity: 1;
+}
+/* ========================================
+RESPONSIVE
+======================================== */
+@media (max-width: 768px) {
+.app-container {
+padding: 0.75rem;
+}
+.header {
+flex-direction: column;
+align-items: flex-start;
+}
+.header-actions {
+width: 100%;
+justify-content: space-between;
+}
+.toolbar {
+overflow-x: auto;
+}
+.toolbar-group {
+flex-shrink: 0;
+}
+.btn span:not(.sr-only) {
+display: none;
+}
+.btn svg {
+margin: 0;
+}
+#thought-pad {
+font-size: 1rem;
+padding: 1rem;
+min-height: 50vh;
+}
+.status-bar {
+flex-direction: column;
+align-items: flex-start;
+}
+.modal {
+margin: 0.5rem;
+}
+.find-replace-bar .form-input {
+max-width: 100%;
+flex: 1;
+}
+}
+@media (max-width: 480px) {
+.theme-switcher {
+flex-wrap: wrap;
+}
+.theme-btn {
+width: 28px;
+height: 28px;
+}
+.notes-tabs {
+padding: 0.35rem 0;
+}
+.note-tab {
+padding: 0.35rem 0.5rem;
+font-size: 0.75rem;
+}
+.toast-container {
+left: 1rem;
+right: 1rem;
+}
+.toast {
+width: 100%;
+}
+}
+/* ========================================
+PRINT STYLES
+======================================== */
+@media print {
+body {
+background: white;
+color: black;
+}
+.header,
+.toolbar,
+.notes-tabs,
+.status-bar,
+.footer,
+.focus-exit-btn,
+.toast-container,
+.modal-backdrop {
+display: none !important;
+}
+.textarea-container {
+box-shadow: none;
+border: 1px solid #ccc;
+}
+#thought-pad {
+min-height: auto;
+color: black;
+}
+}
+/* ========================================
+REDUCED MOTION
+======================================== */
+@media (prefers-reduced-motion: reduce) {
+*,
+*::before,
+*::after {
+animation-duration: 0.01ms !important;
+animation-iteration-count: 1 !important;
+transition-duration: 0.01ms !important;
+}
+}
+/* ========================================
+UTILITIES
+======================================== */
+.sr-only {
+position: absolute;
+width: 1px;
+height: 1px;
+padding: 0;
+margin: -1px;
+overflow: hidden;
+clip: rect(0, 0, 0, 0);
+white-space: nowrap;
+border: 0;
+}
+.hidden {
+display: none !important;
+}
+</style>
+</head>
+<body>
+<div class="app-container">
+<!-- Header -->
+<header class="header">
+<div class="logo">
+<svg class="logo-icon" viewBox="0 0 24 24" aria-hidden="true">
+<path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M18,20H6V4H13V9H18V20Z"/>
+</svg>
+<h1 class="logo-text">Thought Dump Pad</h1>
+</div>
+<div class="header-actions">
+<div class="theme-switcher" role="radiogroup" aria-label="Choose theme">
+<button class="theme-btn active" data-theme="light" title="Light" role="radio" aria-checked="true"></button>
+<button class="theme-btn" data-theme="dark" title="Dark" role="radio" aria-checked="false"></button>
+<button class="theme-btn" data-theme="sepia" title="Sepia" role="radio" aria-checked="false"></button>
+<button class="theme-btn" data-theme="ocean" title="Ocean" role="radio" aria-checked="false"></button>
+<button class="theme-btn" data-theme="forest" title="Forest" role="radio" aria-checked="false"></button>
+<button class="theme-btn" data-theme="lavender" title="Lavender" role="radio" aria-checked="false"></button>
+<button class="theme-btn" data-theme="midnight" title="Midnight" role="radio" aria-checked="false"></button>
+<button class="theme-btn" data-theme="high-contrast" title="High Contrast" role="radio" aria-checked="false"></button>
+</div>
+<button class="btn btn-icon" id="settings-btn" title="Settings (Ctrl+,)">
+<svg viewBox="0 0 24 24"><path d="M12,15.5A3.5,3.5 0 0,1 8.5,12A3.5,3.5 0 0,1 12,8.5A3.5,3.5 0 0,1 15.5,12A3.5,3.5 0 0,1 12,15.5M19.43,12.97C19.47,12.65 19.5,12.33 19.5,12C19.5,11.67 19.47,11.34 19.43,11L21.54,9.37C21.73,9.22 21.78,8.95 21.66,8.73L19.66,5.27C19.54,5.05 19.27,4.96 19.05,5.05L16.56,6.05C16.04,5.66 15.5,5.32 14.87,5.07L14.5,2.42C14.46,2.18 14.25,2 14,2H10C9.75,2 9.54,2.18 9.5,2.42L9.13,5.07C8.5,5.32 7.96,5.66 7.44,6.05L4.95,5.05C4.73,4.96 4.46,5.05 4.34,5.27L2.34,8.73C2.21,8.95 2.27,9.22 2.46,9.37L4.57,11C4.53,11.34 4.5,11.67 4.5,12C4.5,12.33 4.53,12.65 4.57,12.97L2.46,14.63C2.27,14.78 2.21,15.05 2.34,15.27L4.34,18.73C4.46,18.95 4.73,19.03 4.95,18.95L7.44,17.94C7.96,18.34 8.5,18.68 9.13,18.93L9.5,21.58C9.54,21.82 9.75,22 10,22H14C14.25,22 14.46,21.82 14.5,21.58L14.87,18.93C15.5,18.67 16.04,18.34 16.56,17.94L19.05,18.95C19.27,19.03 19.54,18.95 19.66,18.73L21.66,15.27C21.78,15.05 21.73,14.78 21.54,14.63L19.43,12.97Z"/></svg>
+</button>
+<button class="btn btn-icon" id="shortcuts-btn" title="Keyboard Shortcuts (Ctrl+/)">
+<svg viewBox="0 0 24 24"><path d="M19,10H17V8H19M19,13H17V11H19M16,10H14V8H16M16,13H14V11H16M16,17H8V15H16M7,10H5V8H7M7,13H5V11H7M8,11H10V13H8M8,8H10V10H8M11,11H13V13H11M11,8H13V10H11M20,5H4C2.89,5 2,5.89 2,7V17A2,2 0 0,0 4,19H20A2,2 0 0,0 22,17V7C22,5.89 21.1,5 20,5Z"/></svg>
+</button>
+</div>
+</header>
+<!-- Toolbar -->
+<div class="toolbar">
+<div class="toolbar-group">
+<!-- Import -->
+<div class="dropdown" id="import-dropdown">
+<button class="btn" id="import-btn">
+<svg viewBox="0 0 24 24"><path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M13.5,16V19H10.5V16H8L12,12L16,16H13.5M13,9V3.5L18.5,9H13Z"/></svg>
+<span>Import</span>
+</button>
+<div class="dropdown-menu">
+<button class="dropdown-item" id="import-file">
+<svg viewBox="0 0 24 24"><path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M13,9V3.5L18.5,9H13Z"/></svg>
+Import from File
+</button>
+<button class="dropdown-item" id="import-clipboard">
+<svg viewBox="0 0 24 24"><path d="M19,20H5V4H7V7H17V4H19M12,2A1,1 0 0,1 13,3A1,1 0 0,1 12,4A1,1 0 0,1 11,3A1,1 0 0,1 12,2M19,2H14.82C14.4,0.84 13.3,0 12,0C10.7,0 9.6,0.84 9.18,2H5A2,2 0 0,0 3,4V20A2,2 0 0,0 5,22H19A2,2 0 0,0 21,20V4A2,2 0 0,0 19,2Z"/></svg>
+Paste from Clipboard
+</button>
+</div>
+</div>
+<!-- Export -->
+<div class="dropdown" id="export-dropdown">
+<button class="btn" id="export-btn">
+<svg viewBox="0 0 24 24"><path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M13.5,16V13H10.5V16H8L12,20L16,16H13.5M13,9V3.5L18.5,9H13Z"/></svg>
+<span>Export</span>
+</button>
+<div class="dropdown-menu">
+<button class="dropdown-item" data-format="txt">
+<svg viewBox="0 0 24 24"><path d="M14,2H6A2,2 0 0,0 4,4V20A2,2 0 0,0 6,22H18A2,2 0 0,0 20,20V8L14,2M13,9V3.5L18.5,9H13Z"/></svg>
+Export as .txt
+</button>
+<button class="dropdown-item" data-format="md">
+<svg viewBox="0 0 24 24"><path d="M20.56,18H3.44C2.65,18 2,17.37 2,16.59V7.41C2,6.63 2.65,6 3.44,6H20.56C21.35,6 22,6.63 22,7.41V16.59C22,17.37 21.35,18 20.56,18M6.81,15.19V11.53L8.73,13.88L10.65,11.53V15.19H12.58V8.81H10.65L8.73,11.16L6.81,8.81H4.89V15.19H6.81M19.69,12H17.77V8.81H15.85V12H13.92L16.81,15.28L19.69,12Z"/></svg>
+Export as .md
+</button>
+<button class="dropdown-item" data-format="html">
+<svg viewBox="0 0 24 24"><path d="M12,17.56L16.07,16.43L16.62,10.33H9.38L9.2,8.3H16.8L17,6.31H7L7.56,12.32H14.45L14.22,14.9L12,15.5L9.78,14.9L9.64,13.24H7.64L7.93,16.43L12,17.56M4.07,3H19.93L18.5,19.2L12,21L5.5,19.2L4.07,3Z"/></svg>
+Export as .html
+</button>
+<div class="dropdown-divider"></div>
+<button class="dropdown-item" id="copy-clipboard">
+<svg viewBox="0 0 24 24"><path d="M19,21H8V7H19M19,5H8A2,2 0 0,0 6,7V21A2,2 0 0,0 8,23H19A2,2 0 0,0 21,21V7A2,2 0 0,0 19,5M16,1H4A2,2 0 0,0 2,3V17H4V3H16V1Z"/></svg>
+Copy to Clipboard
+</button>
+<button class="dropdown-item" id="download-backup">
+<svg viewBox="0 0 24 24"><path d="M12,3A9,9 0 0,0 3,12H0L4,16L8,12H5A7,7 0 0,1 12,5A7,7 0 0,1 19,12A7,7 0 0,1 12,19C10.5,19 9.09,18.5 7.94,17.7L6.5,19.14C8.04,20.3 9.94,21 12,21A9,9 0 0,0 21,12A9,9 0 0,0 12,3M14,12A2,2 0 0,0 12,10A2,2 0 0,0 10,12A2,2 0 0,0 12,14A2,2 0 0,0 14,12Z"/></svg>
+Download Backup
+</button>
+</div>
+</div>
+<div class="toolbar-divider"></div>
+<!-- Find & Replace -->
+<button class="btn" id="find-replace-btn" title="Find & Replace (Ctrl+F)">
+<svg viewBox="0 0 24 24"><path d="M9.5,3A6.5,6.5 0 0,1 16,9.5C16,11.11 15.41,12.59 14.44,13.73L14.71,14H15.5L20.5,19L19,20.5L14,15.5V14.71L13.73,14.44C12.59,15.41 11.11,16 9.5,16A6.5,6.5 0 0,1 3,9.5A6.5,6.5 0 0,1 9.5,3M9.5,5C7,5 5,7 5,9.5C5,12 7,14 9.5,14C12,14 14,12 14,9.5C14,7 12,5 9.5,5Z"/></svg>
+<span>Find</span>
+</button>
+<div class="toolbar-divider"></div>
+<!-- Undo/Redo -->
+<button class="btn btn-icon" id="undo-btn" title="Undo (Ctrl+Z)">
+<svg viewBox="0 0 24 24"><path d="M12.5,8C9.85,8 7.45,9 5.6,10.6L2,7V16H11L7.38,12.38C8.77,11.22 10.54,10.5 12.5,10.5C16.04,10.5 19.05,12.81 20.1,16L22.47,15.22C21.08,11.03 17.15,8 12.5,8Z"/></svg>
+</button>
+<button class="btn btn-icon" id="redo-btn" title="Redo (Ctrl+Y)">
+<svg viewBox="0 0 24 24"><path d="M18.4,10.6C16.55,9 14.15,8 11.5,8C6.85,8 2.92,11.03 1.54,15.22L3.9,16C4.95,12.81 7.95,10.5 11.5,10.5C13.45,10.5 15.23,11.22 16.62,12.38L13,16H22V7L18.4,10.6Z"/></svg>
+</button>
+</div>
+<div class="toolbar-group">
+<!-- Focus Mode -->
+<button class="btn" id="focus-mode-btn" title="Focus Mode (F11)">
+<svg viewBox="0 0 24 24"><path d="M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9M12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17M12,4.5C7,4.5 2.73,7.61 1,12C2.73,16.39 7,19.5 12,19.5C17,19.5 21.27,16.39 23,12C21.27,7.61 17,4.5 12,4.5Z"/></svg>
+<span>Focus</span>
+</button>
+<!-- Fullscreen -->
+<button class="btn btn-icon" id="fullscreen-btn" title="Fullscreen (F11)">
+<svg viewBox="0 0 24 24"><path d="M5,5H10V7H7V10H5V5M14,5H19V10H17V7H14V5M17,14H19V19H14V17H17V14M10,17V19H5V14H7V17H10Z"/></svg>
+</button>
+<!-- Print -->
+<button class="btn btn-icon" id="print-btn" title="Print (Ctrl+P)">
+<svg viewBox="0 0 24 24"><path d="M18,3H6V7H18M19,12A1,1 0 0,1 18,11A1,1 0 0,1 19,10A1,1 0 0,1 20,11A1,1 0 0,1 19,12M16,19H8V14H16M19,8H5A3,3 0 0,0 2,11V17H6V21H18V17H22V11A3,3 0 0,0 19,8Z"/></svg>
+</button>
+<div class="toolbar-divider"></div>
+<!-- Clear All -->
+<button class="btn btn-danger btn-icon" id="clear-btn" title="Clear All">
+<svg viewBox="0 0 24 24"><path d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"/></svg>
+</button>
+</div>
+</div>
+<!-- Find & Replace Bar -->
+<div class="find-replace-bar" id="find-replace-bar">
+<input type="text" class="form-input" id="find-input" placeholder="Find...">
+<input type="text" class="form-input" id="replace-input" placeholder="Replace with...">
+<span class="find-count" id="find-count">0 matches</span>
+<button class="btn btn-sm" id="find-prev">◀</button>
+<button class="btn btn-sm" id="find-next">▶</button>
+<button class="btn btn-sm" id="replace-one">Replace</button>
+<button class="btn btn-sm" id="replace-all">Replace All</button>
+<button class="btn btn-sm btn-icon" id="close-find">
+<svg viewBox="0 0 24 24"><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/></svg>
+</button>
+</div>
+<!-- Notes Tabs -->
+<div class="notes-tabs" id="notes-tabs">
+<!-- Tabs will be generated dynamically -->
+</div>
+<!-- Main Writing Area -->
+<main class="writing-area">
+<div class="textarea-container">
+<textarea
+id="thought-pad"
+placeholder="Start typing your thoughts... Everything is saved automatically. Press F11 or click Focus for distraction-free writing."
+aria-label="Writing area"
+spellcheck="true"
+autofocus
+></textarea>
+<div class="status-bar">
+<div class="stats-group">
+<span class="stat-item" id="word-count">
+<svg viewBox="0 0 24 24"><path d="M3,5H9V11H3V5M5,7V9H7V7H5M11,7H21V9H11V7M11,15H21V17H11V15M5,11H9V13H5V11M5,15H9V17H5V15M5,19H9V21H5V19M3,13H9V21H3V13Z"/></svg>
+0 words
+</span>
+<span class="stat-item" id="char-count">0 chars</span>
+<span class="stat-item" id="sentence-count">0 sentences</span>
+<span class="stat-item" id="para-count">0 paragraphs</span>
+<span class="stat-item" id="reading-time">
+<svg viewBox="0 0 24 24"><path d="M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z"/></svg>
+~0 min read
+</span>
+</div>
+<div class="goal-progress" id="goal-progress" title="Daily word goal">
+<span id="goal-text">0/500</span>
+<div class="progress-bar">
+<div class="progress-fill" id="goal-fill" style="width: 0%"></div>
+</div>
+</div>
+<div class="session-timer" id="session-timer" title="Session time">
+<svg viewBox="0 0 24 24" width="12" height="12"><path fill="currentColor" d="M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2Z"/></svg>
+<span id="timer-display">00:00</span>
+</div>
+<div class="save-status">
+<span class="save-indicator" id="save-indicator"></span>
+<span id="save-text">Saved</span>
+</div>
+<div class="focus-stats">
+<span id="focus-word-count">0 words</span>
+<span id="focus-timer">00:00</span>
+</div>
+</div>
+</div>
+</main>
+<!-- Focus Mode Exit Button -->
+<button class="btn focus-exit-btn" id="focus-exit-btn" title="Exit Focus Mode (Esc)">
+<svg viewBox="0 0 24 24"><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/></svg>
+Exit Focus
+</button>
+<!-- Footer -->
+<footer class="footer">
+Made with <span class="heart" aria-label="love">❤️</span> by <a href="#" target="_blank" rel="noopener noreferrer">Aliriyaj007</a>
+</footer>
+</div>
+<!-- Toast Container -->
+<div class="toast-container" id="toast-container"></div>
+<!-- Hidden File Input -->
+<input type="file" id="file-input" accept=".txt,.md,.text,.markdown" style="display: none;">
+<!-- Settings Modal -->
+<div class="modal-backdrop" id="settings-modal">
+<div class="modal">
+<div class="modal-header">
+<h2 class="modal-title">Settings</h2>
+<button class="modal-close" data-close-modal>
+<svg viewBox="0 0 24 24"><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/></svg>
+</button>
+</div>
+<div class="modal-body">
+<div class="settings-section">
+<h3 class="settings-section-title">Editor</h3>
+<div class="setting-row">
+<span class="setting-label">Font Size</span>
+<div class="setting-control">
+<input type="range" class="range-slider" id="font-size-slider" min="12" max="24" value="18">
+<span class="range-value" id="font-size-value">18px</span>
+</div>
+</div>
+<div class="setting-row">
+<span class="setting-label">Line Height</span>
+<div class="setting-control">
+<input type="range" class="range-slider" id="line-height-slider" min="14" max="28" value="18" step="2">
+<span class="range-value" id="line-height-value">1.8</span>
+</div>
+</div>
+<div class="setting-row">
+<span class="setting-label">Font Family</span>
+<div class="setting-control">
+<select class="form-input form-select" id="font-family-select">
+<option value="serif">Serif (Georgia)</option>
+<option value="sans">Sans-Serif (System)</option>
+<option value="mono">Monospace (Consolas)</option>
+</select>
+</div>
+</div>
+</div>
+<div class="settings-section">
+<h3 class="settings-section-title">Writing Goals</h3>
+<div class="setting-row">
+<span class="setting-label">Daily Word Goal</span>
+<div class="setting-control">
+<input type="number" class="form-input" id="word-goal-input" min="0" max="10000" value="500" style="width: 80px;">
+</div>
+</div>
+</div>
+<div class="settings-section">
+<h3 class="settings-section-title">Data</h3>
+<div class="setting-row">
+<span class="setting-label">Restore Backup</span>
+<div class="setting-control">
+<button class="btn btn-sm" id="restore-backup-btn">
+<svg viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M13,3A9,9 0 0,0 4,12H1L4.89,15.89L4.96,16.03L9,12H6A7,7 0 0,1 13,5A7,7 0 0,1 20,12A7,7 0 0,1 13,19C11.07,19 9.32,18.21 8.06,16.94L6.64,18.36C8.27,20 10.5,21 13,21A9,9 0 0,0 22,12A9,9 0 0,0 13,3Z"/></svg>
+Upload Backup
+</button>
+</div>
+</div>
+<div class="setting-row">
+<span class="setting-label">Clear All Data</span>
+<div class="setting-control">
+<button class="btn btn-sm btn-danger" id="clear-all-data-btn">
+<svg viewBox="0 0 24 24" width="14" height="14"><path fill="currentColor" d="M19,4H15.5L14.5,3H9.5L8.5,4H5V6H19M6,19A2,2 0 0,0 8,21H16A2,2 0 0,0 18,19V7H6V19Z"/></svg>
+Clear All
+</button>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Shortcuts Modal -->
+<div class="modal-backdrop" id="shortcuts-modal">
+<div class="modal">
+<div class="modal-header">
+<h2 class="modal-title">Keyboard Shortcuts</h2>
+<button class="modal-close" data-close-modal>
+<svg viewBox="0 0 24 24"><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/></svg>
+</button>
+</div>
+<div class="modal-body">
+<div class="shortcuts-grid">
+<div class="shortcut-item">
+<span class="shortcut-label">Save</span>
+<div class="shortcut-keys"><span class="key">Ctrl</span><span class="key">S</span></div>
+</div>
+<div class="shortcut-item">
+<span class="shortcut-label">Find & Replace</span>
+<div class="shortcut-keys"><span class="key">Ctrl</span><span class="key">F</span></div>
+</div>
+<div class="shortcut-item">
+<span class="shortcut-label">Undo</span>
+<div class="shortcut-keys"><span class="key">Ctrl</span><span class="key">Z</span></div>
+</div>
+<div class="shortcut-item">
+<span class="shortcut-label">Redo</span>
+<div class="shortcut-keys"><span class="key">Ctrl</span><span class="key">Y</span></div>
+</div>
+<div class="shortcut-item">
+<span class="shortcut-label">New Note</span>
+<div class="shortcut-keys"><span class="key">Ctrl</span><span class="key">N</span></div>
+</div>
+<div class="shortcut-item">
+<span class="shortcut-label">Export</span>
+<div class="shortcut-keys"><span class="key">Ctrl</span><span class="key">E</span></div>
+</div>
+<div class="shortcut-item">
+<span class="shortcut-label">Print</span>
+<div class="shortcut-keys"><span class="key">Ctrl</span><span class="key">P</span></div>
+</div>
+<div class="shortcut-item">
+<span class="shortcut-label">Focus Mode</span>
+<div class="shortcut-keys"><span class="key">Esc</span></div>
+</div>
+<div class="shortcut-item">
+<span class="shortcut-label">Fullscreen</span>
+<div class="shortcut-keys"><span class="key">F11</span></div>
+</div>
+<div class="shortcut-item">
+<span class="shortcut-label">Settings</span>
+<div class="shortcut-keys"><span class="key">Ctrl</span><span class="key">,</span></div>
+</div>
+<div class="shortcut-item">
+<span class="shortcut-label">Shortcuts</span>
+<div class="shortcut-keys"><span class="key">Ctrl</span><span class="key">/</span></div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Confirm Modal -->
+<div class="modal-backdrop" id="confirm-modal">
+<div class="modal" style="max-width: 400px;">
+<div class="modal-header">
+<h2 class="modal-title" id="confirm-title">Confirm</h2>
+<button class="modal-close" data-close-modal>
+<svg viewBox="0 0 24 24"><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/></svg>
+</button>
+</div>
+<div class="modal-body">
+<p id="confirm-message">Are you sure?</p>
+</div>
+<div class="modal-footer">
+<button class="btn" data-close-modal>Cancel</button>
+<button class="btn btn-danger" id="confirm-action">Confirm</button>
+</div>
+</div>
+</div>
+<!-- Rename Modal -->
+<div class="modal-backdrop" id="rename-modal">
+<div class="modal" style="max-width: 400px;">
+<div class="modal-header">
+<h2 class="modal-title">Rename Note</h2>
+<button class="modal-close" data-close-modal>
+<svg viewBox="0 0 24 24"><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/></svg>
+</button>
+</div>
+<div class="modal-body">
+<div class="form-group">
+<label class="form-label" for="rename-input">Note Name</label>
+<input type="text" class="form-input" id="rename-input" placeholder="Enter note name...">
+</div>
+</div>
+<div class="modal-footer">
+<button class="btn" data-close-modal>Cancel</button>
+<button class="btn btn-primary" id="rename-confirm">Rename</button>
+</div>
+</div>
+</div>
+<script>
+(() => {
+'use strict';
+// ========================================
+// CONFIGURATION
+// ========================================
+const CONFIG = {
+STORAGE_KEYS: {
+NOTES: 'thoughtDumpPad_notes',
+ACTIVE_NOTE: 'thoughtDumpPad_activeNote',
+THEME: 'thoughtDumpPad_theme',
+SETTINGS: 'thoughtDumpPad_settings'
+},
+AUTOSAVE_DELAY: 500,
+DEFAULT_THEME: 'light',
+THEMES: ['light', 'dark', 'sepia', 'ocean', 'forest', 'lavender', 'midnight', 'high-contrast'],
+DEFAULT_SETTINGS: {
+fontSize: 18,
+lineHeight: 1.8,
+fontFamily: 'serif',
+wordGoal: 500
+}
+};
+// ========================================
+// STATE
+// ========================================
+const state = {
+notes: [],
+activeNoteId: null,
+settings: { ...CONFIG.DEFAULT_SETTINGS },
+sessionStart: Date.now(),
+sessionTimer: null,
+findMatches: [],
+currentMatchIndex: -1,
+confirmCallback: null
+};
+// ========================================
+// DOM ELEMENTS
+// ========================================
+const $ = (selector) => document.querySelector(selector);
+const $$ = (selector) => document.querySelectorAll(selector);
+const elements = {
+textarea: $('#thought-pad'),
+notesTabs: $('#notes-tabs'),
+wordCount: $('#word-count'),
+charCount: $('#char-count'),
+sentenceCount: $('#sentence-count'),
+paraCount: $('#para-count'),
+readingTime: $('#reading-time'),
+saveIndicator: $('#save-indicator'),
+saveText: $('#save-text'),
+timerDisplay: $('#timer-display'),
+goalText: $('#goal-text'),
+goalFill: $('#goal-fill'),
+focusWordCount: $('#focus-word-count'),
+focusTimer: $('#focus-timer'),
+themeButtons: $$('.theme-btn'),
+toastContainer: $('#toast-container'),
+fileInput: $('#file-input'),
+findInput: $('#find-input'),
+replaceInput: $('#replace-input'),
+findCount: $('#find-count'),
+findReplaceBar: $('#find-replace-bar')
+};
+// ========================================
+// UTILITY FUNCTIONS
+// ========================================
+function debounce(func, wait) {
+let timeout;
+return function executedFunction(...args) {
+clearTimeout(timeout);
+timeout = setTimeout(() => func.apply(this, args), wait);
+};
+}
+function generateId() {
+return Date.now().toString(36) + Math.random().toString(36).substr(2);
+}
+function formatTime(seconds) {
+const mins = Math.floor(seconds / 60);
+const secs = seconds % 60;
+return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+}
+const storage = {
+get(key) {
+try {
+const item = localStorage.getItem(key);
+return item ? JSON.parse(item) : null;
+} catch (e) {
+console.warn('Storage get error:', e);
+return null;
+}
+},
+set(key, value) {
+try {
+localStorage.setItem(key, JSON.stringify(value));
+return true;
+} catch (e) {
+console.warn('Storage set error:', e);
+return false;
+}
+},
+remove(key) {
+try {
+localStorage.removeItem(key);
+} catch (e) {
+console.warn('Storage remove error:', e);
+}
+}
+};
+// ========================================
+// TOAST NOTIFICATIONS
+// ========================================
+function showToast(message, type = 'success', duration = 3000) {
+const toast = document.createElement('div');
+toast.className = `toast ${type}`;
+const icons = {
+success: '<svg viewBox="0 0 24 24"><path d="M21,7L9,19L3.5,13.5L4.91,12.09L9,16.17L19.59,5.59L21,7Z"/></svg>',
+error: '<svg viewBox="0 0 24 24"><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/></svg>',
+warning: '<svg viewBox="0 0 24 24"><path d="M13,13H11V7H13M13,17H11V15H13M12,2A10,10 0 0,0 2,12A10,10 0 0,0 12,22A10,10 0 0,0 22,12A10,10 0 0,0 12,2Z"/></svg>'
+};
+toast.innerHTML = `${icons[type] || icons.success}<span>${message}</span>`;
+elements.toastContainer.appendChild(toast);
+requestAnimationFrame(() => toast.classList.add('show'));
+setTimeout(() => {
+toast.classList.remove('show');
+setTimeout(() => toast.remove(), 300);
+}, duration);
+}
+// ========================================
+// MODAL MANAGEMENT
+// ========================================
+function openModal(modalId) {
+const modal = $(`#${modalId}`);
+if (modal) {
+modal.classList.add('active');
+const input = modal.querySelector('input:not([type="range"])');
+if (input) setTimeout(() => input.focus(), 100);
+}
+}
+function closeModal(modalId) {
+const modal = $(`#${modalId}`);
+if (modal) modal.classList.remove('active');
+}
+function closeAllModals() {
+$$('.modal-backdrop').forEach(m => m.classList.remove('active'));
+}
+function showConfirm(title, message, callback) {
+$('#confirm-title').textContent = title;
+$('#confirm-message').textContent = message;
+state.confirmCallback = callback;
+openModal('confirm-modal');
+}
+// ========================================
+// NOTES MANAGEMENT
+// ========================================
+const notesManager = {
+init() {
+const savedNotes = storage.get(CONFIG.STORAGE_KEYS.NOTES);
+const activeId = storage.get(CONFIG.STORAGE_KEYS.ACTIVE_NOTE);
+if (savedNotes && savedNotes.length > 0) {
+state.notes = savedNotes;
+state.activeNoteId = activeId || savedNotes[0].id;
+} else {
+this.create('Untitled');
+}
+this.render();
+this.load(state.activeNoteId);
+},
+create(title = 'Untitled') {
+const note = {
+id: generateId(),
+title: title,
+content: '',
+createdAt: Date.now(),
+updatedAt: Date.now()
+};
+state.notes.push(note);
+state.activeNoteId = note.id;
+this.save();
+this.render();
+this.load(note.id);
+elements.textarea.focus();
+return note;
+},
+load(id) {
+const note = state.notes.find(n => n.id === id);
+if (note) {
+state.activeNoteId = id;
+elements.textarea.value = note.content;
+storage.set(CONFIG.STORAGE_KEYS.ACTIVE_NOTE, id);
+this.render();
+statsManager.update();
+}
+},
+update(id, content) {
+const note = state.notes.find(n => n.id === id);
+if (note) {
+note.content = content;
+note.updatedAt = Date.now();
+this.save();
+}
+},
+rename(id, newTitle) {
+const note = state.notes.find(n => n.id === id);
+if (note) {
+note.title = newTitle.trim() || 'Untitled';
+note.updatedAt = Date.now();
+this.save();
+this.render();
+}
+},
+delete(id) {
+if (state.notes.length <= 1) {
+showToast('Cannot delete the last note', 'warning');
+return;
+}
+const index = state.notes.findIndex(n => n.id === id);
+if (index > -1) {
+state.notes.splice(index, 1);
+if (state.activeNoteId === id) {
+const newActive = state.notes[Math.max(0, index - 1)];
+this.load(newActive.id);
+}
+this.save();
+this.render();
+showToast('Note deleted');
+}
+},
+save() {
+storage.set(CONFIG.STORAGE_KEYS.NOTES, state.notes);
+},
+render() {
+elements.notesTabs.innerHTML = state.notes.map(note => `
+<div class="note-tab ${note.id === state.activeNoteId ? 'active' : ''}" data-id="${note.id}">
+<span class="note-tab-title" title="${note.title}">${note.title}</span>
+<button class="note-tab-close" data-delete="${note.id}" title="Close">
+<svg viewBox="0 0 24 24"><path d="M19,6.41L17.59,5L12,10.59L6.41,5L5,6.41L10.59,12L5,17.59L6.41,19L12,13.41L17.59,19L19,17.59L13.41,12L19,6.41Z"/></svg>
+</button>
+</div>
+`).join('') + `
+<button class="btn btn-icon add-note-btn" id="add-note-btn" title="New Note (Ctrl+N)">
+<svg viewBox="0 0 24 24"><path d="M19,13H13V19H11V13H5V11H11V5H13V11H19V13Z"/></svg>
+</button>
+`;
+// Bind events
+$$('.note-tab').forEach(tab => {
+tab.addEventListener('click', (e) => {
+if (!e.target.closest('.note-tab-close')) {
+this.load(tab.dataset.id);
+}
+});
+tab.addEventListener('dblclick', () => {
+const note = state.notes.find(n => n.id === tab.dataset.id);
+if (note) {
+$('#rename-input').value = note.title;
+state.renamingNoteId = note.id;
+openModal('rename-modal');
+}
+});
+});
+$$('.note-tab-close').forEach(btn => {
+btn.addEventListener('click', (e) => {
+e.stopPropagation();
+showConfirm('Delete Note', 'Are you sure you want to delete this note?', () => {
+this.delete(btn.dataset.delete);
+});
+});
+});
+$('#add-note-btn')?.addEventListener('click', () => this.create());
+}
+};
+// ========================================
+// STATS MANAGEMENT
+// ========================================
+const statsManager = {
+countWords(text) {
+const trimmed = text.trim();
+if (!trimmed) return 0;
+return trimmed.split(/\s+/).filter(w => w.length > 0).length;
+},
+countSentences(text) {
+const matches = text.match(/[.!?]+/g);
+return matches ? matches.length : 0;
+},
+countParagraphs(text) {
+const paras = text.split(/\n\s*\n/).filter(p => p.trim().length > 0);
+return paras.length;
+},
+calculateReadingTime(words) {
+const wpm = 200;
+const minutes = Math.ceil(words / wpm);
+return minutes;
+},
+update() {
+const text = elements.textarea.value;
+const words = this.countWords(text);
+const chars = text.length;
+const sentences = this.countSentences(text);
+const paras = this.countParagraphs(text);
+const readTime = this.calculateReadingTime(words);
+elements.wordCount.innerHTML = `<svg viewBox="0 0 24 24"><path d="M3,5H9V11H3V5M5,7V9H7V7H5M11,7H21V9H11V7M11,15H21V17H11V15M5,11H9V13H5V11M5,15H9V17H5V15M5,19H9V21H5V19M3,13H9V21H3V13Z"/></svg> ${words} ${words === 1 ? 'word' : 'words'}`;
+elements.charCount.textContent = `${chars} chars`;
+elements.sentenceCount.textContent = `${sentences} ${sentences === 1 ? 'sentence' : 'sentences'}`;
+elements.paraCount.textContent = `${paras} ${paras === 1 ? 'paragraph' : 'paragraphs'}`;
+elements.readingTime.innerHTML = `<svg viewBox="0 0 24 24"><path d="M12,20A8,8 0 0,0 20,12A8,8 0 0,0 12,4A8,8 0 0,0 4,12A8,8 0 0,0 12,20M12,2A10,10 0 0,1 22,12A10,10 0 0,1 12,22C6.47,22 2,17.5 2,12A10,10 0 0,1 12,2M12.5,7V12.25L17,14.92L16.25,16.15L11,13V7H12.5Z"/></svg> ~${readTime} min read`;
+// Focus mode stats
+elements.focusWordCount.textContent = `${words} words`;
+// Goal progress
+const goal = state.settings.wordGoal;
+const progress = Math.min(100, (words / goal) * 100);
+elements.goalText.textContent = `${words}/${goal}`;
+elements.goalFill.style.width = `${progress}%`;
+elements.goalFill.classList.toggle('complete', progress >= 100);
+}
+};
+// ========================================
+// THEME MANAGEMENT
+// ========================================
+const themeManager = {
+init() {
+const savedTheme = storage.get(CONFIG.STORAGE_KEYS.THEME);
+if (savedTheme && CONFIG.THEMES.includes(savedTheme)) {
+this.apply(savedTheme);
+} else if (window.matchMedia?.('(prefers-color-scheme: dark)').matches) {
+this.apply('dark');
+} else {
+this.apply(CONFIG.DEFAULT_THEME);
+}
+},
+apply(themeName) {
+document.documentElement.setAttribute('data-theme', themeName);
+storage.set(CONFIG.STORAGE_KEYS.THEME, themeName);
+elements.themeButtons.forEach(btn => {
+const isActive = btn.dataset.theme === themeName;
+btn.classList.toggle('active', isActive);
+btn.setAttribute('aria-checked', isActive);
+});
+},
+bindEvents() {
+elements.themeButtons.forEach(btn => {
+btn.addEventListener('click', (e) => {
+e.preventDefault();
+const themeName = btn.dataset.theme;
+themeManager.apply(themeName);
+showToast(`Theme changed to ${themeName}`);
+});
+});
+}
+};
+// ========================================
+// SETTINGS MANAGEMENT
+// ========================================
+const settingsManager = {
+init() {
+const saved = storage.get(CONFIG.STORAGE_KEYS.SETTINGS);
+state.settings = { ...CONFIG.DEFAULT_SETTINGS, ...saved };
+this.apply();
+this.bindEvents();
+},
+apply() {
+const { fontSize, lineHeight, fontFamily, wordGoal } = state.settings;
+elements.textarea.style.fontSize = `${fontSize}px`;
+elements.textarea.style.lineHeight = lineHeight;
+// Clear existing font classes and add the selected one
+elements.textarea.className = '';
+if (fontFamily === 'serif') {
+elements.textarea.classList.add('font-serif');
+} else if (fontFamily === 'sans') {
+elements.textarea.classList.add('font-sans');
+} else if (fontFamily === 'mono') {
+elements.textarea.classList.add('font-mono');
+}
+// Update the UI controls to reflect current settings
+$('#font-size-value').textContent = `${fontSize}px`;
+$('#line-height-value').textContent = lineHeight.toString();
+$('#font-family-select').value = fontFamily;
+$('#word-goal-input').value = wordGoal;
+// Save the updated settings
+this.save();
+// Update stats to reflect any word goal changes
+statsManager.update();
+},
+bindEvents() {
+$('#font-size-slider').addEventListener('input', (e) => {
+const value = parseInt(e.target.value);
+$('#font-size-value').textContent = `${value}px`;
+state.settings.fontSize = value;
+this.apply();
+this.save();
+});
+$('#line-height-slider').addEventListener('input', (e) => {
+const value = parseInt(e.target.value);
+$('#line-height-value').textContent = (value / 10).toFixed(1);
+state.settings.lineHeight = value / 10;
+this.apply();
+this.save();
+});
+$('#font-family-select').addEventListener('change', (e) => {
+state.settings.fontFamily = e.target.value;
+this.apply();
+this.save();
+});
+$('#word-goal-input').addEventListener('change', (e) => {
+const value = Math.max(0, parseInt(e.target.value) || 0);
+state.settings.wordGoal = value;
+this.apply();
+this.save();
+statsManager.update();
+});
+$('#restore-backup-btn').addEventListener('click', () => {
+fileInput.click();
+fileInput.onchange = (e) => {
+const file = e.target.files[0];
+if (file) {
+const reader = new FileReader();
+reader.onload = (e) => {
+try {
+const backup = JSON.parse(e.target.result);
+this.restoreBackup(backup);
+} catch (error) {
+console.error('Invalid backup file:', error);
+showToast('Invalid backup file format', 'error');
+}
+};
+reader.readAsText(file);
+}
+fileInput.value = '';
+};
+});
+$('#clear-all-data-btn').addEventListener('click', () => {
+showConfirm('Clear All Data', 'This will delete all notes and settings. This action cannot be undone.', () => {
+localStorage.clear();
+location.reload();
+});
+});
+},
+save() {
+storage.set(CONFIG.STORAGE_KEYS.SETTINGS, state.settings);
+},
+restoreBackup(backup) {
+if (!backup.notes || !Array.isArray(backup.notes)) {
+showToast('Invalid backup format', 'error');
+return;
+}
+showConfirm('Restore Backup', 'This will replace all current notes and settings. Continue?', () => {
+storage.set(CONFIG.STORAGE_KEYS.NOTES, backup.notes);
+if (backup.settings) {
+storage.set(CONFIG.STORAGE_KEYS.SETTINGS, backup.settings);
+state.settings = backup.settings;
+}
+if (backup.theme) {
+storage.set(CONFIG.STORAGE_KEYS.THEME, backup.theme);
+themeManager.apply(backup.theme);
+}
+location.reload();
+});
+}
+};
+// ========================================
+// SESSION TIMER
+// ========================================
+const timerManager = {
+init() {
+state.sessionStart = Date.now();
+this.updateTimer();
+state.sessionTimer = setInterval(() => this.updateTimer(), 1000);
+},
+updateTimer() {
+const seconds = Math.floor((Date.now() - state.sessionStart) / 1000);
+const display = formatTime(seconds);
+elements.timerDisplay.textContent = display;
+elements.focusTimer.textContent = display;
+},
+reset() {
+state.sessionStart = Date.now();
+this.updateTimer();
+}
+};
+// ========================================
+// AUTO-SAVE
+// ========================================
+const autosaveManager = {
+init() {
+const saveNote = debounce(() => {
+if (state.activeNoteId) {
+elements.saveIndicator.classList.add('saving');
+elements.saveText.textContent = 'Saving...';
+setTimeout(() => {
+notesManager.update(state.activeNoteId, elements.textarea.value);
+elements.saveIndicator.classList.remove('saving');
+elements.saveText.textContent = 'Saved';
+statsManager.update();
+}, 300);
+}
+}, CONFIG.AUTOSAVE_DELAY);
+elements.textarea.addEventListener('input', saveNote);
+}
+};
+// ========================================
+// IMPORT/EXPORT
+// ========================================
+const importExportManager = {
+init() {
+this.bindEvents();
+},
+bindEvents() {
+// Set up file input handler once (outside of click handler)
+if (!elements.fileInput.hasImportHandler) {
+elements.fileInput.addEventListener('change', (e) => {
+const file = e.target.files[0];
+if (file) {
+const reader = new FileReader();
+reader.onload = (e) => {
+try {
+const noteTitle = file.name.replace(/\.[^/.]+$/, "");
+const note = notesManager.create(noteTitle);
+notesManager.update(note.id, e.target.result);
+elements.textarea.value = e.target.result;
+statsManager.update();
+showToast('Note imported successfully');
+} catch (error) {
+console.error('Error importing file:', error);
+showToast('Failed to import file', 'error');
+} finally {
+// Reset file input
+elements.fileInput.value = '';
+}
+};
+reader.onerror = (e) => {
+console.error('File read error:', e);
+showToast('Error reading file', 'error');
+elements.fileInput.value = '';
+};
+reader.readAsText(file);
+} else {
+elements.fileInput.value = '';
+}
+});
+elements.fileInput.hasImportHandler = true;
+}
+
+// Import from file - just trigger the file input dialog
+$('#import-file').addEventListener('click', () => {
+elements.fileInput.click();
+});
+
+// Import from clipboard
+$('#import-clipboard').addEventListener('click', async () => {
+try {
+const text = await navigator.clipboard.readText();
+if (text.trim()) {
+const note = notesManager.create('Pasted Note');
+notesManager.update(note.id, text);
+elements.textarea.value = text;
+statsManager.update();
+showToast('Note pasted from clipboard');
+} else {
+showToast('Clipboard is empty', 'warning');
+}
+} catch (error) {
+console.error('Failed to read clipboard:', error);
+showToast('Failed to read clipboard. Make sure you have given permission.', 'error');
+}
+});
+// Export buttons
+$$('.dropdown-item[data-format]').forEach(btn => {
+btn.addEventListener('click', (e) => {
+const format = e.currentTarget.dataset.format;
+this.exportNote(format);
+});
+});
+// Copy to clipboard
+$('#copy-clipboard').addEventListener('click', async () => {
+try {
+await navigator.clipboard.writeText(elements.textarea.value);
+showToast('Copied to clipboard');
+} catch (error) {
+console.error('Failed to copy to clipboard:', error);
+showToast('Failed to copy. Try using Ctrl+C instead.', 'error');
+}
+});
+// Download backup
+$('#download-backup').addEventListener('click', () => {
+const backup = {
+notes: state.notes,
+settings: state.settings,
+theme: storage.get(CONFIG.STORAGE_KEYS.THEME),
+exportedAt: new Date().toISOString()
+};
+const blob = new Blob([JSON.stringify(backup, null, 2)], { type: 'application/json' });
+const url = URL.createObjectURL(blob);
+const a = document.createElement('a');
+a.href = url;
+a.download = `thought-dump-backup-${new Date().toISOString().split('T')[0]}.json`;
+document.body.appendChild(a);
+a.click();
+document.body.removeChild(a);
+URL.revokeObjectURL(url);
+showToast('Backup downloaded');
+});
+},
+exportNote(format) {
+const note = state.notes.find(n => n.id === state.activeNoteId);
+if (!note) return;
+let content = note.content;
+let extension = format;
+let mimeType = 'text/plain';
+if (format === 'html') {
+content = `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>${note.title}</title>
+<style>
+body {
+font-family: sans-serif;
+line-height: 1.6;
+max-width: 800px;
+margin: 0 auto;
+padding: 20px;
+}
+pre {
+background: #f5f5f5;
+padding: 10px;
+border-radius: 5px;
+overflow-x: auto;
+}
+</style>
+</head>
+<body>
+<h1>${note.title}</h1>
+<pre>${content.replace(/</g, '&lt;').replace(/>/g, '&gt;')}</pre>
+</body>
+</html>`;
+mimeType = 'text/html';
+} else if (format === 'md') {
+mimeType = 'text/markdown';
+}
+const blob = new Blob([content], { type: mimeType });
+const url = URL.createObjectURL(blob);
+const a = document.createElement('a');
+a.href = url;
+a.download = `${note.title}-${new Date().toISOString().split('T')[0]}.${extension}`;
+document.body.appendChild(a);
+a.click();
+document.body.removeChild(a);
+URL.revokeObjectURL(url);
+showToast(`Exported as .${format}`);
+}
+};
+// ========================================
+// FIND AND REPLACE
+// ========================================
+const findReplaceManager = {
+init() {
+this.bindEvents();
+},
+bindEvents() {
+$('#find-replace-btn').addEventListener('click', () => {
+elements.findReplaceBar.classList.toggle('active');
+if (elements.findReplaceBar.classList.contains('active')) {
+elements.findInput.focus();
+this.performFind();
+} else {
+this.clearHighlights();
+}
+});
+$('#close-find').addEventListener('click', () => {
+elements.findReplaceBar.classList.remove('active');
+this.clearHighlights();
+});
+elements.findInput.addEventListener('input', () => this.performFind());
+$('#find-next').addEventListener('click', () => this.goToMatch(1));
+$('#find-prev').addEventListener('click', () => this.goToMatch(-1));
+$('#replace-one').addEventListener('click', () => this.replaceOne());
+$('#replace-all').addEventListener('click', () => this.replaceAll());
+// Close on Escape
+elements.findInput.addEventListener('keydown', (e) => {
+if (e.key === 'Escape') {
+elements.findReplaceBar.classList.remove('active');
+this.clearHighlights();
+}
+});
+},
+performFind() {
+const searchText = elements.findInput.value;
+if (!searchText) {
+this.clearHighlights();
+return;
+}
+const text = elements.textarea.value;
+const regex = new RegExp(searchText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
+const matches = [...text.matchAll(regex)];
+state.findMatches = matches.map(match => match.index);
+state.currentMatchIndex = -1;
+elements.findCount.textContent = `${matches.length} matches`;
+if (matches.length > 0) {
+this.goToMatch(1);
+} else {
+this.clearHighlights();
+}
+},
+goToMatch(direction) {
+if (state.findMatches.length === 0) return;
+if (direction > 0) {
+state.currentMatchIndex = (state.currentMatchIndex + 1) % state.findMatches.length;
+} else {
+state.currentMatchIndex = (state.currentMatchIndex - 1 + state.findMatches.length) % state.findMatches.length;
+}
+this.highlightCurrentMatch();
+},
+highlightCurrentMatch() {
+const searchText = elements.findInput.value;
+const text = elements.textarea.value;
+const start = state.findMatches[state.currentMatchIndex];
+if (start === undefined) return;
+// Scroll to position
+const lines = text.substring(0, start).split('\n');
+const line = lines.length;
+const column = lines[lines.length - 1].length;
+elements.textarea.focus();
+elements.textarea.setSelectionRange(start, start + searchText.length);
+// Scroll into view - simpler approach
+elements.textarea.scrollTop = elements.textarea.scrollHeight;
+},
+replaceOne() {
+const searchText = elements.findInput.value;
+const replaceText = elements.replaceInput.value;
+if (!searchText || state.currentMatchIndex === -1) return;
+const start = state.findMatches[state.currentMatchIndex];
+const text = elements.textarea.value;
+if (start !== undefined) {
+const newText = text.substring(0, start) + replaceText + text.substring(start + searchText.length);
+elements.textarea.value = newText;
+// Update note
+notesManager.update(state.activeNoteId, newText);
+statsManager.update();
+// Refresh find
+this.performFind();
+showToast('Replaced');
+}
+},
+replaceAll() {
+const searchText = elements.findInput.value;
+const replaceText = elements.replaceInput.value;
+if (!searchText) return;
+const regex = new RegExp(searchText.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'g');
+const newText = elements.textarea.value.replace(regex, replaceText);
+elements.textarea.value = newText;
+notesManager.update(state.activeNoteId, newText);
+statsManager.update();
+this.performFind();
+showToast(`Replaced all ${state.findMatches.length} occurrences`);
+},
+clearHighlights() {
+state.findMatches = [];
+state.currentMatchIndex = -1;
+elements.findCount.textContent = '0 matches';
+elements.textarea.setSelectionRange(0, 0);
+}
+};
+// ========================================
+// FOCUS MODE
+// ========================================
+const focusModeManager = {
+init() {
+$('#focus-mode-btn').addEventListener('click', () => this.toggle());
+$('#focus-exit-btn').addEventListener('click', () => this.exit());
+document.addEventListener('keydown', (e) => {
+if (e.key === 'Escape' && document.body.classList.contains('focus-mode')) {
+this.exit();
+}
+if (e.key === 'F11') {
+e.preventDefault();
+this.toggle();
+}
+});
+},
+toggle() {
+if (document.body.classList.contains('focus-mode')) {
+this.exit();
+} else {
+this.enter();
+}
+},
+enter() {
+document.body.classList.add('focus-mode');
+timerManager.reset();
+elements.textarea.focus();
+},
+exit() {
+document.body.classList.remove('focus-mode');
+elements.textarea.focus();
+}
+};
+// ========================================
+// FULLSCREEN
+// ========================================
+const fullscreenManager = {
+init() {
+$('#fullscreen-btn').addEventListener('click', () => this.toggle());
+document.addEventListener('keydown', (e) => {
+if (e.key === 'F11') {
+e.preventDefault();
+this.toggle();
+}
+});
+document.addEventListener('fullscreenchange', () => {
+const isFullscreen = document.fullscreenElement;
+$('#fullscreen-btn svg').innerHTML = isFullscreen 
+? '<path d="M5,16H8V19H10V14H5M10,10H14V5H10M14,19H19V14H16V19H14M8,8H5V10H10V5H8V8Z"/>'
+: '<path d="M5,5H10V7H7V10H5V5M14,5H19V10H17V7H14V5M17,14H19V19H14V17H17V14M10,17V19H5V14H7V17H10Z"/>';
+});
+},
+toggle() {
+if (!document.fullscreenElement) {
+document.documentElement.requestFullscreen().catch(err => {
+console.error('Fullscreen error:', err);
+showToast('Fullscreen mode unavailable', 'warning');
+});
+} else {
+document.exitFullscreen();
+}
+}
+};
+// ========================================
+// KEYBOARD SHORTCUTS
+// ========================================
+const shortcutsManager = {
+init() {
+document.addEventListener('keydown', (e) => {
+// Don't trigger shortcuts when typing in inputs/modals
+if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') {
+if (e.target.closest('.modal')) return;
+// These shortcuts work in the textarea
+if (e.ctrlKey || e.metaKey) {
+switch(e.key.toLowerCase()) {
+case 's':
+e.preventDefault();
+notesManager.update(state.activeNoteId, elements.textarea.value);
+showToast('Saved manually');
+break;
+case 'f':
+e.preventDefault();
+$('#find-replace-btn').click();
+break;
+case 'z':
+if (!e.shiftKey) {
+// Undo - browser handles this
+}
+break;
+case 'y':
+// Redo - browser handles this
+break;
+case 'n':
+e.preventDefault();
+notesManager.create();
+break;
+case 'e':
+e.preventDefault();
+$('#export-btn').click();
+break;
+case 'p':
+e.preventDefault();
+window.print();
+break;
+case ',':
+e.preventDefault();
+openModal('settings-modal');
+break;
+case '/':
+e.preventDefault();
+openModal('shortcuts-modal');
+break;
+}
+}
+}
+});
+// Bind buttons
+$('#settings-btn').addEventListener('click', () => openModal('settings-modal'));
+$('#shortcuts-btn').addEventListener('click', () => openModal('shortcuts-modal'));
+$('#undo-btn').addEventListener('click', () => document.execCommand('undo'));
+$('#redo-btn').addEventListener('click', () => document.execCommand('redo'));
+$('#print-btn').addEventListener('click', () => window.print());
+$('#clear-btn').addEventListener('click', () => {
+showConfirm('Clear Note', 'Clear all text in current note?', () => {
+elements.textarea.value = '';
+notesManager.update(state.activeNoteId, '');
+statsManager.update();
+elements.textarea.focus();
+});
+});
+}
+};
+// ========================================
+// DROPDOWN MANAGEMENT
+// ========================================
+const dropdownManager = {
+init() {
+document.addEventListener('click', (e) => {
+const dropdowns = $$('.dropdown');
+dropdowns.forEach(dropdown => {
+if (!dropdown.contains(e.target)) {
+dropdown.classList.remove('active');
+}
+});
+// Toggle dropdowns
+if (e.target.closest('#import-btn') || e.target.closest('#export-btn')) {
+const dropdown = e.target.closest('.dropdown');
+dropdown.classList.toggle('active');
+e.preventDefault();
+}
+});
+}
+};
+// ========================================
+// MODAL EVENT BINDING
+// ========================================
+function bindModalEvents() {
+// Close modals on backdrop click
+$$('.modal-backdrop').forEach(modal => {
+modal.addEventListener('click', (e) => {
+if (e.target === modal) {
+modal.classList.remove('active');
+}
+});
+});
+// Close buttons
+$$('[data-close-modal]').forEach(btn => {
+btn.addEventListener('click', () => {
+btn.closest('.modal-backdrop').classList.remove('active');
+});
+});
+// Rename modal
+$('#rename-confirm').addEventListener('click', () => {
+if (state.renamingNoteId) {
+const newName = $('#rename-input').value.trim();
+if (newName) {
+notesManager.rename(state.renamingNoteId, newName);
+closeModal('rename-modal');
+state.renamingNoteId = null;
+showToast('Note renamed');
+} else {
+showToast('Note name cannot be empty', 'warning');
+}
+}
+});
+$('#rename-input').addEventListener('keydown', (e) => {
+if (e.key === 'Enter') {
+e.preventDefault();
+$('#rename-confirm').click();
+}
+});
+// Confirm modal
+$('#confirm-action').addEventListener('click', () => {
+if (typeof state.confirmCallback === 'function') {
+state.confirmCallback();
+}
+closeModal('confirm-modal');
+state.confirmCallback = null;
+});
+}
+// ========================================
+// INITIALIZATION
+// ========================================
+function init() {
+// Initialize all managers
+themeManager.init();
+themeManager.bindEvents();  // Fixed: Added theme button event binding
+notesManager.init();
+settingsManager.init();
+timerManager.init();
+autosaveManager.init();
+importExportManager.init();  // Fixed: Proper file import handling
+findReplaceManager.init();
+focusModeManager.init();
+fullscreenManager.init();
+shortcutsManager.init();
+dropdownManager.init();
+bindModalEvents();
+// Initial stats update
+statsManager.update();
+// Focus textarea
+elements.textarea.focus();
+console.log('Thought Dump Pad initialized');
+}
+// Start the app
+init();
+})();
+</script>
+</body>
+</html>
